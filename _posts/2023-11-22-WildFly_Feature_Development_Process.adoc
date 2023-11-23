@@ -8,7 +8,7 @@ description: Discussion of how WildFly features are developed
 ---
 
 = WildFly Feature Development Process
-
+Test
 Some of the developers of WildFly have been thinking about how to clarify and formalize some of the processes we use when developing WildFly, and I want to make the broader WildFly community aware of the discussion.
 
 This post basically duplicates one I recently made on the link:https://lists.jboss.org/archives/list/wildfly-dev@lists.jboss.org/thread/JI5GX7Q2UPGXTDEMZG4F3PNF4BDQKB4A/[wildfly-dev mail list]. I'd love to hear your thoughts about this on that mail thread or in link:https://wildfly.zulipchat.com/#narrow/stream/174184-wildfly-developers[Zulip]
