@@ -1,0 +1,23 @@
+name: "Update the blog post's date"
+
+inputs:
+  $PR_NUM:
+    description: "PR ID to amend"
+    required: false
+    default: 'main'
+  post_name:
+    description: "Blog post name to amend"
+    required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone git repo
+        uses: actions/checkout@v4
+      - name: Checkout Pull Request
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+            echo "Checking out from PR #$PR_NUM"
+            hub pr checkout $PR_NUM
