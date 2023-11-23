@@ -16,8 +16,8 @@ jobs:
       - name: Clone git repo
         uses: actions/checkout@v4
       - name: Checkout Pull Request
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: |
-            echo "Checking out from PR #$PR_NUM"
-            hub pr checkout $PR_NUM
+        run: |
+          echo "Checking out from PR #$PR_NUM"
+          hub pr checkout $PR_NUM
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
