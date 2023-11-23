@@ -1,13 +1,15 @@
 name: "Update the blog post's date"
 
-inputs:
-  $PR_NUM:
-    description: "PR ID to amend"
-    required: false
-    default: 'main'
-  post_name:
-    description: "Blog post name to amend"
-    required: true
+on:
+  workflow_dispatch:
+    inputs:
+      PR_NUM:
+        description: "PR ID to amend"
+        required: false
+        default: 'main'
+      post_name:
+        description: "Blog post name to amend"
+        required: true
 
 jobs:
   build:
