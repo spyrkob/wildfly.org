@@ -28,12 +28,15 @@ jobs:
           readonly ORIGINAL_PR="${{ github.event.inputs.PR_NUM }}"
           readonly NEW_DATE="$(date '+%Y-%m-%d')"
 
+          FIX_BRANCH_NAME=''
           # checkout PR if provided
           if [ "${ORIGINAL_PR}" != '' ]; then
             echo "Checking out PR${ORIGINAL_PR}"
             gh pr checkout "${ORIGINAL_PR}" --repo spyrkob/wildfly.org
+            FIX_BRANCH_NAME="fix_pr_${ORIGINAL_PR}"
           else
             echo "Using branch main"
+            FIX_BRANCH_NAME="fix_pr_main"
           fi
 
           if [ ! -f "_posts/${OLD_POST}" ]; then
@@ -51,9 +54,8 @@ jobs:
 
           git mv _posts/${OLD_POST} _posts/${NEW_POST}
 
-          readonly FIX_BRANCH="fix_pr_${ORIGINAL_PR:=main}"
           echo "Creating a new branch: "
-          git checkout -b "${FIX_BRANCH}"
+          git checkout -b "${FIX_BRANCH_NAME}"
 
           echo "Committing changes and creating update PR"
           git config --global user.name "Wildfly.org CI"
@@ -62,15 +64,15 @@ jobs:
 
           # TODO: remove me
           git remote -v
-          git push --set-upstream origin "${FIX_BRANCH}"
+          git push --set-upstream origin "${FIX_BRANCH_NAME}"
 
           PR_TITLE=""
           SOURCE_LINK=""
           if [ "${ORIGINAL_PR}" == '' ]; then
-            SOURCE_LINK="$(gh browse -b main -n --repo spyrkob/wildfly.org)"
+            SOURCE_LINK="[main]($(gh browse -b main -n --repo spyrkob/wildfly.org))"
             PR_TITLE="Update date of post: ${OLD_POST}"
           else 
-            SOURCE_LINK="\#${ORIGINAL_PR}"
+            SOURCE_LINK="[PR${ORIGINAL_PR}]$(gh browse ${ORIGINAL_PR} --repo spyrkob/wildfly.org -n)"
             PR_TITLE="Update date of PR: $(gh pr view 1 --repo spyrkob/wildfly.org --json title --jq '.title')"
           fi
 
