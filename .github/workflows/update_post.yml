@@ -62,7 +62,7 @@ jobs:
 
           # TODO: remove me
           git remote -v
-          git push --set-upstream spyrkob "${FIX_BRANCH}"
+          git push --set-upstream origin "${FIX_BRANCH}"
 
           PR_TITLE=""
           SOURCE_LINK=""
