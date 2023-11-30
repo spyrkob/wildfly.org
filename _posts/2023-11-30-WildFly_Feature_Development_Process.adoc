@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "WildFly Feature Development Process"
-date:   2023-11-22
+date:   2023-11-30
 tags:   development
 author: bstansberry
 description: Discussion of how WildFly features are developed
