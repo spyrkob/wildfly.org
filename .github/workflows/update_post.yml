@@ -74,7 +74,7 @@ jobs:
           git checkout -b fix_pr_${{ github.event.inputs.PR_NUM }}
 
           git remote -v
-          git push
+          git push --set-upstream origin fix_pr_${{ github.event.inputs.PR_NUM }}
 
           gh pr create --title "The bug is fixed" --body "Everything works again" --repo spyrkob/wildfly.org
           # git push
