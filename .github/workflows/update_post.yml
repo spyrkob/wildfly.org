@@ -71,6 +71,9 @@ jobs:
           echo "Committing changes and updating the PR" 
           git commit -am "Update ${OLD_POST} blog date"
 
+          git remote -v
+          git push
+
           git checkout -b fix_pr_${{ github.event.inputs.PR_NUM }}
 
           gh pr create --title "The bug is fixed" --body "Everything works again" --repo spyrkob/wildfly.org
