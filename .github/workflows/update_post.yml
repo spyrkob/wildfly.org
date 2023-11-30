@@ -78,4 +78,4 @@ jobs:
 
           gh pr create --title "${PR_TITLE}"\
            --body "Date update for ${OLD_POST} from ${SOURCE_LINK}"\
-           --repo origin/wildfly.org
+           --repo spyrkob/wildfly.org
