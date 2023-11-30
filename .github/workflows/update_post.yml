@@ -28,7 +28,7 @@ jobs:
           readonly ORIGINAL_PR="${{ github.event.inputs.PR_NUM }}"
           readonly NEW_DATE="$(date '+%Y-%m-%d')"
 
-          readonly REPO_ID="wildfly/wildfly.org"
+          readonly REPO_ID="spyrkob/wildfly.org"
           readonly COMMIT_USERNAME="Wildfly.org CI"
           readonly COMMIT_EMAIL="wildfly-dev@lists.jboss.org"
 
