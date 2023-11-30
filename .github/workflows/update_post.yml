@@ -70,7 +70,7 @@ jobs:
             SOURCE_LINK="$(gh browse -b main -n --repo spyrkob/wildfly.org)"
             PR_TITLE="Update date of post: ${OLD_POST}"
           else 
-            SOURCE_LINK="\#{ORIGINAL_PR}"
+            SOURCE_LINK="\#${ORIGINAL_PR}"
             PR_TITLE="Update date of PR: $(gh pr view 1 --repo spyrkob/wildfly.org --json title --jq '.title')"
           fi
 
