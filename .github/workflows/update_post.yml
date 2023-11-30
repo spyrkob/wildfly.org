@@ -43,6 +43,8 @@ jobs:
         with:
           ref: "main"
       - name: Update the date of ${{ github.event.inputs.post_name }}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr checkout ${{ github.event.inputs.PR_NUM }}
           # readonly OLD_POST="${{ github.event.inputs.post_name }}"
