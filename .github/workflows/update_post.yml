@@ -14,31 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v3
-        if: ${{ github.event.inputs.PR_NUM != '' }}
-        id: get-pr
-        with:
-          script: |
-            const request = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: `${{ github.event.inputs.PR_NUM }}`
-            }
-            core.info(`Getting PR #${{ github.event.inputs.PR_NUM }} from ${request.owner}/${request.repo}`)
-            try {
-              const result = await github.pulls.get(request)
-              return result.data
-            } catch (err) {
-              core.setFailed(`Failed to retrieve the PR info: ${err}`)
-            }
-      - name: Clone git repo from PR
-        if: ${{ github.event.inputs.PR_NUM != '' }}
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
-      - name: Clone git repo from main branch
-        if: ${{ github.event.inputs.PR_NUM == '' }}
+      - name: Clone git repository
         uses: actions/checkout@v4
         with:
           ref: "main"
@@ -46,11 +22,20 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -e
+
           readonly OLD_POST="${{ github.event.inputs.post_name }}"
+          readonly ORIGINAL_PR="${{ github.event.inputs.PR_NUM }}"
           readonly NEW_DATE="$(date '+%Y-%m-%d')"
 
-          gh pr checkout ${{ github.event.inputs.PR_NUM }}
-          
+          # checkout PR if provided
+          if [ "${ORIGINAL_PR}" != '' ]; then
+            echo "Checking out PR${ORIGINAL_PR}"
+            gh pr checkout "${ORIGINAL_PR}" --repo spyrkob/wildfly.org
+          else
+            echo "Using branch main"
+          fi
+
           if [ ! -f "_posts/${OLD_POST}" ]; then
             echo "Blog post ${OLD_POST} not found"
             exit 1
@@ -65,16 +50,30 @@ jobs:
           echo "Renaming the ${OLD_POST} to ${NEW_POST}"
 
           git mv _posts/${OLD_POST} _posts/${NEW_POST}
+
+          readonly FIX_BRANCH="fix_pr_${ORIGINAL_PR:=main}"
+          echo "Creating a new branch: "
+          git checkout -b "${FIX_BRANCH}"
+
+          echo "Committing changes and creating update PR"
           git config --global user.name "Wildfly.org CI"
           git config --global user.email "wildfly-dev@lists.jboss.org"
-          
-          echo "Committing changes and updating the PR" 
           git commit -am "Update ${OLD_POST} blog date"
 
-          git checkout -b fix_pr_${{ github.event.inputs.PR_NUM }}
-
+          # TODO: remove me
           git remote -v
-          git push --set-upstream origin fix_pr_${{ github.event.inputs.PR_NUM }}
+          git push --set-upstream spyrkob "${FIX_BRANCH}"
 
-          gh pr create --title "The bug is fixed" --body "Everything works again" --repo spyrkob/wildfly.org
-          # git push
+          PR_TITLE=""
+          SOURCE_LINK=""
+          if [ "${ORIGINAL_PR}" == '' ]; then
+            SOURCE_LINK="$(gh browse -b main -n --repo spyrkob/wildfly.org)"
+            PR_TITLE="Update date of post: ${OLD_POST}"
+          else 
+            SOURCE_LINK="#{ORIGINAL_PR}"
+            PR_TITLE="Update date of PR: $(gh pr view 1 --repo spyrkob/wildfly.org --json title --jq '.title')"
+          fi
+
+          gh pr create --title "${PR_TITLE}"\
+          --body "Date update for ${OLD_POST} from ${SOURCE_LINK} "\
+          --repo spyrkob/wildfly.org
