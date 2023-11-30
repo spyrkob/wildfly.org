@@ -71,5 +71,5 @@ jobs:
           echo "Committing changes and updating the PR" 
           git commit -am "Update ${OLD_POST} blog date"
 
-          gh pr create --title "The bug is fixed" --body "Everything works again" --repository spyrkob/wildfly.org
+          gh pr create --title "The bug is fixed" --body "Everything works again" --repo spyrkob/wildfly.org
           # git push
