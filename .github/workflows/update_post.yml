@@ -46,10 +46,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh pr checkout ${{ github.event.inputs.PR_NUM }}
-
           readonly OLD_POST="${{ github.event.inputs.post_name }}"
           readonly NEW_DATE="$(date '+%Y-%m-%d')"
+
+          gh pr checkout ${{ github.event.inputs.PR_NUM }}
           
           if [ ! -f "_posts/${OLD_POST}" ]; then
             echo "Blog post ${OLD_POST} not found"
@@ -70,6 +70,8 @@ jobs:
           
           echo "Committing changes and updating the PR" 
           git commit -am "Update ${OLD_POST} blog date"
+
+          git co -b fix_pr_${{ github.event.inputs.PR_NUM }}
 
           gh pr create --title "The bug is fixed" --body "Everything works again" --repo spyrkob/wildfly.org
           # git push
