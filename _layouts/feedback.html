@@ -1,0 +1,36 @@
+---
+layout: base
+---
+
+<div class="feedback-page grid-wrapper">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">var submitted=false;</script>
+
+    <div class="grid-item width-12-12">
+        <h1>Leave feadback about WildFly project</h1>
+        <h2 class="page-subtitle">Help us improve WildFly project by sharing your thoughs about this website or WildFly project.</h2>
+        <form method="POST" action="http://localhost:3000/v3/entry/github/spyrkob/wildfly.org/staticman/gh-pages/comments">
+  <input name="options[redirect]" type="hidden" value="https://my-site.com">
+  <!-- e.g. "2016-01-02-this-is-a-post" -->
+  <input name="options[slug]" type="hidden" value="{{ page.slug }}">
+  <label><input name="fields[name]" type="text">Name</label>
+  <label><input name="fields[email]" type="email">E-mail</label>
+  <label><textarea name="fields[message]"></textarea>Message</label>
+
+  <button type="submit">Go!</button>
+</form>
+    </div>
+    <div class="grid-item width-12-12" id="submitted-div" style="display:none;">
+        <p>Thank you for submitting your feedback!</p>
+    </div>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
+
+    <script type="text/javascript">
+        $('#gform').on('submit', function(e) {
+            $('#gform *').fadeOut(2000, function(e) {
+                $('#submitted-div').fadeIn();
+            });
+        });
+    </script>
+</div>
