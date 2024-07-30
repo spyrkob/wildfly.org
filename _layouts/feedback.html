@@ -1,0 +1,35 @@
+---
+layout: base
+---
+
+<div class="feedback-page grid-wrapper">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">var submitted=false;</script>
+
+    <div class="grid-item width-12-12">
+        <h1>Leave feadback about WildFly project</h1>
+        <h2 class="page-subtitle">Help us improve WildFly project by sharing your thoughs about this website or WildFly project.</h2>
+        <form name="gform" id="gform" enctype="text/plain"  target="hidden_iframe" onsubmit="submitted=true;" 
+            action="https://docs.google.com/forms/d/e/1FAIpQLSfdmcVAviw6BBn9lVO7a6feHk5ccqb_tHFxMLBpxJ7kjZz2MQ/formResponse?" 
+            style="margin-left: 50px; margin-right: 50px; margin-top: 50px;">
+        <label>Your email (optional):</label><br/>
+        <input type="text" name="entry.767697244" style="margin-bottom: 10px;"><br/>
+        <label>Feedback:</label><br/>
+        <textarea name="entry.546193515" rows="10" cols="70" style="width: 75%; margin-bottom: 10px;"></textarea> <br/>
+        <div style="display: flex; flex-direction: row; align-items: center;"><input style="display:flex; align-self: center;" type="submit" value="Submit"></div>
+      </form>
+    </div>
+    <div class="grid-item width-12-12" id="submitted-div" style="display:none;">
+        <p>Thank you for submitting your feedback!</p>
+    </div>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
+
+    <script type="text/javascript">
+        $('#gform').on('submit', function(e) {
+            $('#gform *').fadeOut(2000, function(e) {
+                $('#submitted-div').fadeIn();
+            });
+        });
+    </script>
+</div>
